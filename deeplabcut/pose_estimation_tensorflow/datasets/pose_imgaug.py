@@ -332,9 +332,21 @@ class ImgaugPoseDataset(BasePoseDataset):
             im_file = data_item.im_path
 
             logging.debug("image %s", im_file)
-            image = imread(
-                os.path.join(self.cfg["project_path"], im_file), mode="skimage"
-            )
+            #### edited 2/20/2024 ####
+            
+            #image = imread(
+            #    os.path.join(self.cfg["project_path"], im_file), mode="skimage"
+            #)
+
+            try:
+                image_path = os.path.join(self.cfg["project_path"], im_file)
+                image = imread(image_path, mode="skimage")
+
+            except Exception as e:
+                print(f"Error occurred while reading image: {image_path}")
+                raise e 
+
+            #### end edit ####
 
             if self.has_gt:
                 joints = data_item.joints
